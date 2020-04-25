@@ -18,6 +18,7 @@ import ru.asfick.fabrication.utils.ContactCollisions;
 import ru.asfick.fabrication.utils.Input;
 
 public class Game implements Screen {
+    private UI ui;
     private final Main main;
     private SpriteBatch batch;
     private World world;
@@ -25,6 +26,7 @@ public class Game implements Screen {
     private OrthographicCamera cam;
     private ArrayList<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();
     private Iron iron;
+    private float stateTime;
 
     public Game(final Main main) {
         this.main = main;
@@ -39,6 +41,7 @@ public class Game implements Screen {
         world = new World(new Vector2(0, 0), true);
         world.setContactListener(new ContactCollisions());
         box2DDebugRenderer = new Box2DDebugRenderer();
+        ui = new UI();
         cam = new OrthographicCamera(Main.WIDTH_BOX_2D, Main.HEIGHT_BOX_2D);
 
         Gdx.input.setInputProcessor(new Input(cam));
@@ -53,27 +56,44 @@ public class Game implements Screen {
         assemblyLines.add(new AssemblyLine(world, 6, 44, new Vector2(.5f, 2f)));
         assemblyLines.add(new AssemblyLine(world, 6, 46, new Vector2(0, 2f)));
         assemblyLines.add(new AssemblyLine(world, 6, 48, new Vector2(-2f, .5f)));
-        assemblyLines.add(new AssemblyLine(world, 4, 48, new Vector2(-2, 0f)));
+        assemblyLines.add(new AssemblyLine(world, 4, 48, new Vector2(0, 2f)));
 
         iron = new Iron(world, 3f, 48);
+        stateTime = 0;
+    }
 
+    private void preRender(float delta){
+        world.step(delta, 4, 4);
+        batch.setProjectionMatrix(cam.combined);
+        cam.update();
+        stateTime += delta;
     }
 
     @Override
     public void render(float delta) {
-        world.step(delta, 4, 4);
-        batch.setProjectionMatrix(cam.combined);
-        cam.update();
+        preRender(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //batch.begin();
-        //batch.end();
+        batch.setProjectionMatrix(cam.combined);
+        batch.begin();
+
+        for (AssemblyLine assemblyLine : assemblyLines)
+            assemblyLine.render(batch, stateTime);
+        iron.render(batch);
+
+        batch.end();
 
         if (main.DEBUG)
             box2DDebugRenderer.render(world, cam.combined);
 
+        ui.render(batch);
+
+        postRender();
+    }
+
+    private void postRender(){
         iron.updatePosition();
     }
 

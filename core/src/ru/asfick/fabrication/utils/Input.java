@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
+import ru.asfick.fabrication.Main;
+import ru.asfick.fabrication.game.UI;
+
 public class Input implements InputProcessor {
     OrthographicCamera camera;
 
@@ -28,8 +31,13 @@ public class Input implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        return false;
+        if (screenX >= 0 && screenX <= UI.getSize() &&
+                screenY <= Gdx.graphics.getHeight() && screenY >= Gdx.graphics.getHeight() - UI.getSize())
+            camera.zoom -= .25f;
+        if (screenX >= Gdx.graphics.getWidth() - UI.getSize() && screenX <= Gdx.graphics.getWidth() &&
+                screenY <= Gdx.graphics.getHeight() && screenY >= Gdx.graphics.getHeight() - UI.getSize())
+            camera.zoom += .25f;
+        return true;
     }
 
     @Override
@@ -39,11 +47,10 @@ public class Input implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        float x = screenX / 32f;
-        float y = (Gdx.graphics.getHeight() - screenY) / (33.75f * Gdx.graphics.getHeight() / Gdx.graphics.getWidth());
-        System.out.println("X: " + x + " Y: " + y);
+        float x = Gdx.input.getDeltaX() / Main.WIDTH_BOX_2D;
+        float y = Gdx.input.getDeltaY() / (Main.WIDTH_BOX_2D * Gdx.graphics.getHeight() / Gdx.graphics.getWidth()) * 2;
 
-        camera.position.set(x, y, 0);
+        camera.translate(-x * camera.zoom, y * camera.zoom);
 
         return true;
     }

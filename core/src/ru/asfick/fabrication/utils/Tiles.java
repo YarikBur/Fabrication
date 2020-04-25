@@ -37,7 +37,7 @@ public class Tiles {
         TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth()/Columns, texture.getHeight()/Lines);
         for(int y=0;y<Lines;y++)
             for(int x=0;x<Columns;x++)
-                textureRegions.put("tiles"+y+"_"+x, tmp[y][x]);
+                textureRegions.put("tiles_"+y+"_"+x, tmp[y][x]);
         Lines=0; Columns=0; texture=null;
     }
 

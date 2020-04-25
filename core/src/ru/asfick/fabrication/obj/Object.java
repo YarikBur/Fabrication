@@ -1,5 +1,7 @@
 package ru.asfick.fabrication.obj;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -22,6 +24,7 @@ public class Object {
     Vector2 force;
     Body body;
     Map<String, TextureRegion> textureRegionMap;
+    ArrayList<Animation<TextureRegion>> animations = new ArrayList<Animation<TextureRegion>>();
     ArrayList<Fixture> fixtures = new ArrayList<Fixture>();
     Tiles tiles;
     boolean item;
@@ -32,6 +35,7 @@ public class Object {
      */
     public void updatePosition(){
         this.body.setLinearVelocity(force);
+        this.position = this.body.getPosition();
     }
 
     /**
@@ -92,8 +96,11 @@ public class Object {
      * @param batch - слой отрисовки
      * @param textureRegion - регион текстуры
      */
-    void renderTexture(SpriteBatch batch, TextureRegion textureRegion){
-        batch.draw(textureRegion, position.x, position.y);
+    void renderTexture(SpriteBatch batch, TextureRegion textureRegion, float rotation, float scale){
+        batch.draw(textureRegion, position.x - textureRegion.getRegionWidth() / 2, position.y - textureRegion.getRegionHeight() / 2,
+                textureRegion.getRegionWidth() / 2, textureRegion.getRegionHeight() / 2,
+                textureRegion.getRegionWidth() - 2, textureRegion.getRegionHeight() - 2,
+                scale / 15, scale / 15, rotation);
     }
 
     /**

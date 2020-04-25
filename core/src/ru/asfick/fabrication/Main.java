@@ -15,7 +15,7 @@ public class Main extends Game {
 
 	@Override
 	public void create () {
-		WIDTH_BOX_2D = 33.75f;
+		WIDTH_BOX_2D = 32f;
 		HEIGHT_BOX_2D = WIDTH_BOX_2D * Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
 
 		batch = new SpriteBatch();
