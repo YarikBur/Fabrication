@@ -97,10 +97,10 @@ public class Object {
      * @param textureRegion - регион текстуры
      */
     void renderTexture(SpriteBatch batch, TextureRegion textureRegion, float rotation, float scale){
-        batch.draw(textureRegion, position.x - textureRegion.getRegionWidth() / 2, position.y - textureRegion.getRegionHeight() / 2,
-                textureRegion.getRegionWidth() / 2, textureRegion.getRegionHeight() / 2,
-                textureRegion.getRegionWidth() - 2, textureRegion.getRegionHeight() - 2,
-                scale / 15, scale / 15, rotation);
+        batch.draw(textureRegion, position.x - textureRegion.getRegionWidth() / 2f, position.y - textureRegion.getRegionHeight() / 2f,
+                textureRegion.getRegionWidth() / 2f, textureRegion.getRegionHeight() / 2f,
+                textureRegion.getRegionWidth() - 2f, textureRegion.getRegionHeight() - 2f,
+                scale / 15f, scale / 15f, rotation);
     }
 
     /**

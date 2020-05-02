@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -15,7 +16,7 @@ import ru.asfick.fabrication.Main;
 import ru.asfick.fabrication.obj.Iron;
 import ru.asfick.fabrication.obj.AssemblyLine;
 import ru.asfick.fabrication.utils.ContactCollisions;
-import ru.asfick.fabrication.utils.Input;
+import ru.asfick.fabrication.utils.InputAndroid;
 
 public class Game implements Screen {
     private UI ui;
@@ -44,7 +45,8 @@ public class Game implements Screen {
         ui = new UI();
         cam = new OrthographicCamera(Main.WIDTH_BOX_2D, Main.HEIGHT_BOX_2D);
 
-        Gdx.input.setInputProcessor(new Input(cam));
+        GestureDetector detector = new GestureDetector(new InputAndroid(cam));
+        Gdx.input.setInputProcessor(detector);
 
         cam.position.set(Main.WIDTH_BOX_2D / 2, Main.HEIGHT_BOX_2D / 2, 0);
         cam.update();
@@ -56,7 +58,7 @@ public class Game implements Screen {
         assemblyLines.add(new AssemblyLine(world, 6, 44, new Vector2(.5f, 2f)));
         assemblyLines.add(new AssemblyLine(world, 6, 46, new Vector2(0, 2f)));
         assemblyLines.add(new AssemblyLine(world, 6, 48, new Vector2(-2f, .5f)));
-        assemblyLines.add(new AssemblyLine(world, 4, 48, new Vector2(0, 2f)));
+        assemblyLines.add(new AssemblyLine(world, 4, 48, new Vector2(-2, 0f)));
 
         iron = new Iron(world, 3f, 48);
         stateTime = 0;
@@ -73,7 +75,7 @@ public class Game implements Screen {
     public void render(float delta) {
         preRender(delta);
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0.4f, 0.4f, 0.4f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(cam.combined);
