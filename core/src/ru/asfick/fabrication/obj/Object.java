@@ -15,6 +15,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import java.util.ArrayList;
 import java.util.Map;
 
+import ru.asfick.fabrication.Main;
+import ru.asfick.fabrication.game.Objects;
 import ru.asfick.fabrication.utils.Tiles;
 
 public class Object {
@@ -28,7 +30,11 @@ public class Object {
     ArrayList<Fixture> fixtures = new ArrayList<Fixture>();
     Tiles tiles;
     boolean item;
+    boolean work = true;
+    boolean generator = false;
     String name;
+    int money = 0;
+    int energy = 0;
 
     /**
      * Обновляет позицию объекта
@@ -152,8 +158,55 @@ public class Object {
     /**
      * Удаляет все фикстуры и текстуры у объекта
      */
-    void destroyObj(){
+    public void destroyObj(){
         for (Fixture fixture : fixtures)
             body.destroyFixture(fixture);
+    }
+
+    /**
+     * Отрисовка объекта
+     * @param batch - слой
+     * @param stateTime
+     */
+    public void render(SpriteBatch batch, float stateTime) { }
+
+    /**
+     * Обновления статистики
+     */
+    public boolean updateStatistics(){
+        if(generator) {
+            Main.ENERGY.addCount(energy);
+            work = true;
+        } else {
+            work = Main.ENERGY.isSeize(energy);
+            if(work)
+                Main.ENERGY.delCount(energy);
+        }
+
+        return work;
+    }
+
+    /**
+     * Кол-во требуемой энергии, если это не генератор. Если это генератор, то кол-во генерируемой энергии
+     * @return - int
+     */
+    public int getEnergy() {
+        return energy;
+    }
+
+    /**
+     * Сколько стоит данный объект
+     * @return - int
+     */
+    public int getMoney() {
+        return money;
+    }
+
+    /**
+     * Является ли этот объект генератором
+     * @return - boolean
+     */
+    public boolean isGenerator() {
+        return generator;
     }
 }

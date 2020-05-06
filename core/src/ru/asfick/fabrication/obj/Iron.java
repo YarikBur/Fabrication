@@ -14,16 +14,20 @@ public class Iron extends Object {
         this.setPosition(x, y);
         this.name = "item_iron";
         this.setTextureRegionMap("obj/iron/iron.png", 1, 1);
+        this.money = 10;
 
         this.body = this.createBody(BodyDef.BodyType.DynamicBody, false);
         this.addCircleShapeToBody(this.size.x, 0, true);
         this.body.getFixtureList().get(0).setUserData(this);
     }
 
-    public void render(SpriteBatch batch){
+
+    @Override
+    public void render(SpriteBatch batch, float stateTime){
         this.renderTexture(batch, this.textureRegionMap.get("tiles_0_0"), 0, 1.5f);
     }
 
+    @Override
     public void destroyObj(){
         super.destroyObj();
     }
