@@ -1,4 +1,4 @@
-# Fabrication [![Build Status](https://img.shields.io/badge/Version-20201204-red.svg)](#FireMan)
+# Fabrication [![Build Status](https://img.shields.io/badge/Version-06082020-red.svg)](#FireMan)
 
 ## Project version
 ![Build Status Alpha](https://img.shields.io/badge/build-alpha-red.svg)
