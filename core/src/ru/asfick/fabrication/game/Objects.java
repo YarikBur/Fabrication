@@ -2,13 +2,16 @@ package ru.asfick.fabrication.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import ru.asfick.fabrication.Main;
 import ru.asfick.fabrication.obj.Object;
 
-public class Objects {
-    private ArrayList<Object> objectsOnMap = new ArrayList<Object>();
-    private ArrayList<Object> objectsInWarehouse = new ArrayList<Object>();
+public class Objects implements Serializable {
+    private static final long serialVersionUID = 2996460929349290082L;
+    private static ArrayList<Object> objectsOnMap = new ArrayList<Object>();
+    private static ArrayList<Object> objectsInWarehouse = new ArrayList<Object>();
 
     private static int delEnergy = 0;
     private static int addEnergy = 0;
@@ -19,8 +22,9 @@ public class Objects {
      * Добавить объект на карту
      * @param obj - объект
      */
-    void addObjectOnMap(Object obj){
-        this.objectsOnMap.add(obj);
+    public void addObjectOnMap(Object obj){
+        Objects.objectsOnMap.add(obj);
+        delMoney += obj.getMoney();
     }
 
     /**
@@ -36,14 +40,14 @@ public class Objects {
      * @param obj - продать
      * @return - удалось ли продать объект
      */
-    boolean sellObject(Object obj){
+    public boolean sellObject(Object obj){
         boolean seller = false;
 
         for (Object object : objectsOnMap){
             if (object == obj){
                 addMoney += object.getMoney();
                 seller = true;
-                objectsOnMap.remove(obj);
+                objectsOnMap.remove(object);
                 break;
             }
         }
@@ -102,7 +106,7 @@ public class Objects {
 
         for(Object object : objectsOnMap)
             if (!object.isItem())
-                if(object.updateStatistics()){
+                if(object.updateStatistics()) {
                     if (object.isGenerator())
                         addEnergy += object.getEnergy();
                     else
@@ -117,7 +121,12 @@ public class Objects {
      */
     void render(SpriteBatch batch, float stateTime){
         for (Object object : objectsOnMap)
-            object.render(batch, stateTime);
+            if (!object.isItem())
+                object.render(batch, stateTime);
+
+        for (Object object : objectsOnMap)
+            if (object.isItem())
+                object.render(batch, stateTime);
     }
 
     /**
@@ -133,6 +142,15 @@ public class Objects {
      */
     void dispose(){
 
+    }
+
+    void destroyObjects(){
+        for (Object object : objectsOnMap)
+            if (object.isDestroy())
+                if (sellObject(object)) {
+                    object.destroyObj();
+                    break;
+                }
     }
 
     /**

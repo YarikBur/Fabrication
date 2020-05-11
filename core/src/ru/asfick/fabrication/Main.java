@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import ru.asfick.fabrication.game.Pref;
 import ru.asfick.fabrication.game.Statistics;
 
 public class Main extends Game {
@@ -14,11 +15,13 @@ public class Main extends Game {
 	public final boolean DEBUG = true;
     public static final Statistics ENERGY = new Statistics();
     public static final Statistics MONEY = new Statistics();
+    private Pref pref;
 
 	private final ru.asfick.fabrication.game.Game GAME = new ru.asfick.fabrication.game.Game(this);
 
 	@Override
 	public void create () {
+		pref = new Pref();
 		WIDTH_BOX_2D = 32f;
 		HEIGHT_BOX_2D = WIDTH_BOX_2D * Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
 

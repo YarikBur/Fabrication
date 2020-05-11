@@ -15,15 +15,13 @@ public class AssemblyLine extends Object {
 
     public AssemblyLine(World world, float x, float y, Vector2 force){
         this.world = world;
-        this.size = new Vector2(1, 1);
         this.setPosition(x, y);
-        this.item = false;
         mainForce = force;
         this.force = mainForce;
         this.name = "block_assembly-line";
         this.setTextureRegionMap("obj/assembly_line/assembly_line_straight.png", 8, 1);
         this.money = 2000;
-        this.energy = 1200;
+        this.energy = 120;
 
         TextureRegion[] anim = new TextureRegion[8];
         for (int i = 0; i < anim.length; i++)

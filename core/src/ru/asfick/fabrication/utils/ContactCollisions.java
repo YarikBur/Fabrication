@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
 
+import ru.asfick.fabrication.game.Objects;
 import ru.asfick.fabrication.obj.Object;
 
 public class ContactCollisions implements ContactListener {
@@ -38,6 +39,13 @@ public class ContactCollisions implements ContactListener {
                     contact.setEnabled(false);
                     setAssemblyForceToItem(fa, fb);
                 }
+
+                //Продать предмен, когда он коснется фикстуры продовца
+                if (fa.isItem() && fb.getName().equals("block_seller"))
+                    fa.setDestroy(true);
+
+                if (fb.isItem() && fa.getName().equals("block_seller"))
+                    fb.setDestroy(true);
             }
         }
     }
@@ -86,6 +94,7 @@ public class ContactCollisions implements ContactListener {
                 setNotForceToItem(fa);
             else
                 setNotForceToItem(fb);
+
         }
     }
 

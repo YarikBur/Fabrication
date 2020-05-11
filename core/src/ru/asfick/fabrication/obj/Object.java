@@ -1,7 +1,6 @@
 package ru.asfick.fabrication.obj;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -16,32 +15,35 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import ru.asfick.fabrication.Main;
-import ru.asfick.fabrication.game.Objects;
 import ru.asfick.fabrication.utils.Tiles;
 
 public class Object {
     World world;
     Vector2 position;
-    Vector2 size;
+    Vector2 size = new Vector2(1, 1);
     Vector2 force;
     Body body;
     Map<String, TextureRegion> textureRegionMap;
     ArrayList<Animation<TextureRegion>> animations = new ArrayList<Animation<TextureRegion>>();
     ArrayList<Fixture> fixtures = new ArrayList<Fixture>();
     Tiles tiles;
-    boolean item;
+    boolean item = false;
     boolean work = true;
     boolean generator = false;
     String name;
     int money = 0;
     int energy = 0;
+    Object buy;
+    boolean destroy = false;
 
     /**
      * Обновляет позицию объекта
      */
     public void updatePosition(){
-        this.body.setLinearVelocity(force);
-        this.position = this.body.getPosition();
+        if (isItem()) {
+            this.body.setLinearVelocity(force);
+            this.position = this.body.getPosition();
+        }
     }
 
     /**
@@ -159,8 +161,11 @@ public class Object {
      * Удаляет все фикстуры и текстуры у объекта
      */
     public void destroyObj(){
+        body.setUserData(null);
         for (Fixture fixture : fixtures)
             body.destroyFixture(fixture);
+        world.destroyBody(body);
+
     }
 
     /**
@@ -208,5 +213,29 @@ public class Object {
      */
     public boolean isGenerator() {
         return generator;
+    }
+
+    public World getWorld(){
+        return world;
+    }
+
+    public Body getBody(){
+        return body;
+    }
+
+    public void setDestroy(boolean destroy){
+        this.destroy = destroy;
+    }
+
+    public boolean isDestroy(){
+        return destroy;
+    }
+
+    public void setBuy(Object obj){
+        buy = obj;
+    }
+
+    public void sell(Object obj){
+
     }
 }

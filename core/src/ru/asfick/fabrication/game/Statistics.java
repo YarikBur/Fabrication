@@ -1,7 +1,7 @@
 package ru.asfick.fabrication.game;
 
 public class Statistics {
-    private int count = 150000;
+    private int count = 1500;
 
     /**
      * Возращает значение статистики
